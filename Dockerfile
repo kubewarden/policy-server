@@ -6,25 +6,11 @@ COPY . .
 RUN cargo install --path .
 
 # final image
-FROM debian:buster-slim
+FROM gcr.io/distroless/cc:nonroot
 LABEL org.opencontainers.image.source https://github.com/kubewarden/policy-server
 
-COPY --from=builder /usr/local/cargo/bin/policy-server /usr/local/bin/policy-server
-
-RUN apt-get update && \
-    apt-get install -y ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN adduser \
-  --disabled-password \
-  --gecos "" \
-  --no-create-home \
-  --home "/none" \
-  --shell "/sbin/nologin" \
-  --uid 2000 \
-  kubewarden
-USER kubewarden
+COPY --from=builder /usr/local/cargo/bin/policy-server /
 
 EXPOSE 3000
 
-ENTRYPOINT ["/usr/local/bin/policy-server"]
+CMD ["./policy-server"]
