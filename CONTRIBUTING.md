@@ -1,5 +1,18 @@
 # Contributing
 
+## Tagging commits
+
+The `CHANGELOG.md` file is generated automatically by looking
+at the git commit history.
+
+The genrator will look for tags that have the following prefixes
+inside of their subject:
+
+  * `[feat]`: used by commits introducing a new feature
+  * `[fix]`: used by commits fix an issue
+  * `[perf]`: used by commits improving performance
+  * `[refactor]`: used by commits doing some code refactoring
+
 ## Tagging a new release
 
 ### Create a new tag
