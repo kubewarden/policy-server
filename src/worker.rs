@@ -2,7 +2,7 @@ use crate::communication::EvalRequest;
 use crate::settings::Policy;
 use crate::utils::convert_yaml_map_to_json;
 use anyhow::{anyhow, Result};
-use policy_evaluator::policy_evaluator::{PolicyEvaluator, ValidateRequest};
+use policy_evaluator::policy_evaluator::{PolicyEvaluator, PolicyExecutionMode, ValidateRequest};
 use std::collections::HashMap;
 use tokio::sync::mpsc::Receiver;
 use tracing::{error, info_span};
@@ -38,6 +38,8 @@ impl Worker {
             let policy_evaluator = PolicyEvaluator::from_file(
                 id.to_string(),
                 &policy.wasm_module_path,
+                // TODO (ereslibre): choose based on metadata
+                PolicyExecutionMode::KubewardenWapc,
                 settings_json,
             )?;
 
