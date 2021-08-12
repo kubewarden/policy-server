@@ -35,7 +35,7 @@ impl Worker {
                     }
                 });
 
-            let policy_evaluator = PolicyEvaluator::from_file(
+            let mut policy_evaluator = PolicyEvaluator::from_file(
                 id.to_string(),
                 &policy.wasm_module_path,
                 // TODO (ereslibre): choose based on metadata
