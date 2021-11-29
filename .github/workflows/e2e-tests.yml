@@ -1,0 +1,21 @@
+name: Kubewarden End-to-end tests
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  build:
+    name: "Build"
+    uses: jvanz/policy-server/.github/workflows/container-image.yml@main
+    with:
+      push-image: false
+  run-e2e-tests:
+    name: "Tests"
+    needs: [build]
+    uses: jvanz/kubewarden-end-to-end-tests/.github/workflows/e2e-tests.yml@main
+    with:
+      policy-server-repository: ${{ needs.build.outputs.repository }}
+      policy-server-tag: ${{ needs.build.outputs.tag }}
+      policy-server-container-image-artifact: ${{ needs.build.outputs.artifact }}
