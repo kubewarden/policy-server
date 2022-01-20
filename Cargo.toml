@@ -34,7 +34,7 @@ tokio-rustls = "0.23.1"
 tracing = "0.1"
 tracing-subscriber = { version= "0.2", features = ["fmt"] }
 tracing-futures = "0.2"
-tracing-opentelemetry = "0.15.0"
+tracing-opentelemetry = "0.16.0"
 
 [patch.crates-io]
 # Forcing base64ct to version 1.1.1 given that version 1.2.0 has been
