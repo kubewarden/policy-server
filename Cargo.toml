@@ -32,7 +32,7 @@ serde_yaml = "0.8.15"
 tokio = { version = "^1", features = ["full"] }
 tokio-rustls = "0.23.1"
 tracing = "0.1"
-tracing-subscriber = { version= "0.2", features = ["fmt"] }
+tracing-subscriber = { version= "0.3", features = ["fmt"] }
 tracing-futures = "0.2"
 tracing-opentelemetry = "0.15.0"
 
