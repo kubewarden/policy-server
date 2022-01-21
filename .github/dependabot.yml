@@ -6,3 +6,6 @@ updates:
     interval: daily
     time: "13:00"
   open-pull-requests-limit: 10
+  ignore:
+    - dependency-name: "*"
+      update-types: ["version-update:semver-major"]  # Security updates are unaffected by this setting
