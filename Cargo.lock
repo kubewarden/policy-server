@@ -283,6 +283,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "block-buffer"
+version = "0.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "03588e54c62ae6d763e2a80090d50353b785795361b4ff5b3bf0a5097fc31c0b"
+dependencies = [
+ "generic-array",
+]
+
+[[package]]
 name = "blocking"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -719,6 +728,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "crypto-common"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "683d6b536309245c849479fba3da410962a43ed8e51c26b729208ec0ac2798d0"
+dependencies = [
+ "generic-array",
+]
+
+[[package]]
 name = "crypto-mac"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -841,10 +859,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "digest"
+version = "0.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b697d66081d42af4fba142d56918a3cb21dc8eb63372c6b85d14f44fb9c5979b"
+dependencies = [
+ "block-buffer 0.10.1",
+ "crypto-common",
+ "generic-array",
+]
+
+[[package]]
 name = "directories"
 version = "3.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e69600ff1703123957937708eb27f7a564e48885c537782722ed0ba3189ce1d7"
+dependencies = [
+ "dirs-sys",
+]
+
+[[package]]
+name = "directories"
+version = "4.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f51c5d4ddabd36886dd3e1438cb358cdcb0d7c499cb99cb4ac2e38e18b5cb210"
 dependencies = [
  "dirs-sys",
 ]
@@ -1292,7 +1330,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2a2a2320eb7ec0ebe8da8f744d7812d9fc4cb4d09344ac01898dbcb6a20ae69b"
 dependencies = [
  "crypto-mac",
- "digest",
+ "digest 0.9.0",
 ]
 
 [[package]]
@@ -1559,11 +1597,11 @@ checksum = "98328bb4f360e6b2ceb1f95645602c7014000ef0c3809963df8ad3a3a09f8d99"
 dependencies = [
  "base64",
  "crypto-mac",
- "digest",
+ "digest 0.9.0",
  "hmac",
  "serde",
  "serde_json",
- "sha2",
+ "sha2 0.9.9",
 ]
 
 [[package]]
@@ -2019,11 +2057,56 @@ dependencies = [
  "reqwest",
  "serde",
  "serde_json",
- "sha2",
+ "sha2 0.9.9",
  "tokio",
  "tracing",
  "unicase 1.4.2",
  "url 1.7.2",
+]
+
+[[package]]
+name = "oci-distribution"
+version = "0.8.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cb3c580ad67504493981fff06d790929ece7ce149f344f4d8e411808e5a50f62"
+dependencies = [
+ "anyhow",
+ "futures-util",
+ "hyperx",
+ "jwt",
+ "lazy_static",
+ "regex",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sha2 0.9.9",
+ "tokio",
+ "tracing",
+ "unicase 1.4.2",
+ "url 1.7.2",
+ "www-authenticate",
+]
+
+[[package]]
+name = "oci-distribution"
+version = "0.8.1"
+source = "git+https://github.com/kubewarden/oci-distribution?branch=not-yet-merged-patches#241318a5b50372a7aeb2189aaf96d150e39d4be5"
+dependencies = [
+ "anyhow",
+ "futures-util",
+ "hyperx",
+ "jwt",
+ "lazy_static",
+ "regex",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sha2 0.9.9",
+ "tokio",
+ "tracing",
+ "unicase 1.4.2",
+ "url 1.7.2",
+ "www-authenticate",
 ]
 
 [[package]]
@@ -2129,7 +2212,7 @@ checksum = "d053368e1bae4c8a672953397bd1bd7183dde1c72b0b7612a15719173148d186"
 dependencies = [
  "ecdsa",
  "elliptic-curve",
- "sha2",
+ "sha2 0.9.9",
 ]
 
 [[package]]
@@ -2177,6 +2260,12 @@ name = "paste"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0744126afe1a6dd7f394cb50a716dbe086cb06e255e53d8d0185d82828358fb5"
+
+[[package]]
+name = "path-slash"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3cacbb3c4ff353b534a67fb8d7524d00229da4cb1dc8c79f4db96e375ab5b619"
 
 [[package]]
 name = "pem"
@@ -2277,8 +2366,8 @@ dependencies = [
  "kube",
  "kubewarden-policy-sdk",
  "lazy_static",
- "oci-distribution",
- "policy-fetcher",
+ "oci-distribution 0.8.0",
+ "policy-fetcher 0.3.0",
  "serde",
  "serde_json",
  "tokio",
@@ -2300,16 +2389,43 @@ dependencies = [
  "async-stream",
  "async-trait",
  "base64",
- "directories",
+ "directories 3.0.2",
  "lazy_static",
- "oci-distribution",
+ "oci-distribution 0.8.0",
  "reqwest",
  "rustls 0.19.1",
  "serde",
  "serde_json",
  "serde_yaml",
- "sha2",
- "sigstore",
+ "sha2 0.9.9",
+ "sigstore 0.1.0 (git+https://github.com/kubewarden/sigstore-rs?branch=not-yet-merged-patches)",
+ "tracing",
+ "url 2.2.2",
+ "walkdir",
+]
+
+[[package]]
+name = "policy-fetcher"
+version = "0.4.1"
+source = "git+https://github.com/kubewarden/policy-fetcher?tag=v0.4.1#2f1247cafb84a519134b1d15515ef70ba0f03652"
+dependencies = [
+ "anyhow",
+ "async-std",
+ "async-stream",
+ "async-trait",
+ "base64",
+ "directories 4.0.1",
+ "lazy_static",
+ "oci-distribution 0.8.1 (git+https://github.com/kubewarden/oci-distribution?branch=not-yet-merged-patches)",
+ "path-slash",
+ "regex",
+ "reqwest",
+ "rustls 0.19.1",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "sha2 0.10.1",
+ "sigstore 0.1.0 (git+https://github.com/sigstore/sigstore-rs?rev=35fcc0f0a643c42989d301d6940add98f6ca6b6e)",
  "tracing",
  "url 2.2.2",
  "walkdir",
@@ -2333,7 +2449,7 @@ dependencies = [
  "opentelemetry",
  "opentelemetry-otlp",
  "policy-evaluator",
- "policy-fetcher",
+ "policy-fetcher 0.4.1",
  "rustls 0.20.2",
  "rustls-pemfile 0.3.0",
  "serde",
@@ -2955,11 +3071,22 @@ version = "0.9.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4d58a1e1bf39749807d89cf2d98ac2dfa0ff1cb3faa38fbb64dd88ac8013d800"
 dependencies = [
- "block-buffer",
+ "block-buffer 0.9.0",
  "cfg-if",
  "cpufeatures",
- "digest",
+ "digest 0.9.0",
  "opaque-debug",
+]
+
+[[package]]
+name = "sha2"
+version = "0.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "99c3bd8169c58782adad9290a9af5939994036b76187f7b4f0e6de91dbbfc0ec"
+dependencies = [
+ "cfg-if",
+ "cpufeatures",
+ "digest 0.10.1",
 ]
 
 [[package]]
@@ -2995,8 +3122,27 @@ version = "1.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f2807892cfa58e081aa1f1111391c7a0649d4fa127a4ffbe34bcbfb35a1171a4"
 dependencies = [
- "digest",
+ "digest 0.9.0",
  "rand_core",
+]
+
+[[package]]
+name = "sigstore"
+version = "0.1.0"
+source = "git+https://github.com/sigstore/sigstore-rs?rev=35fcc0f0a643c42989d301d6940add98f6ca6b6e#35fcc0f0a643c42989d301d6940add98f6ca6b6e"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "base64",
+ "ecdsa",
+ "oci-distribution 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "olpc-cjson",
+ "p256",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tracing",
+ "x509-parser",
 ]
 
 [[package]]
@@ -3008,7 +3154,7 @@ dependencies = [
  "async-trait",
  "base64",
  "ecdsa",
- "oci-distribution",
+ "oci-distribution 0.8.0",
  "olpc-cjson",
  "p256",
  "serde",
@@ -3910,7 +4056,7 @@ dependencies = [
  "libc",
  "log",
  "serde",
- "sha2",
+ "sha2 0.9.9",
  "toml",
  "winapi",
  "zstd",
@@ -4254,6 +4400,17 @@ dependencies = [
  "log",
  "thiserror",
  "wast 35.0.2",
+]
+
+[[package]]
+name = "www-authenticate"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "02fd1970505d8d9842104b229ba0c6b6331c0897677d0fc0517ea657e77428d0"
+dependencies = [
+ "hyperx",
+ "unicase 1.4.2",
+ "url 1.7.2",
 ]
 
 [[package]]
