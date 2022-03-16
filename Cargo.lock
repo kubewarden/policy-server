@@ -1583,8 +1583,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d41f782ddd187a0d8965607679bbd741052106b75330696ce7d7712b13194d88"
 dependencies = [
  "k8s-openapi 0.14.0",
- "kube-client",
- "kube-core",
+ "kube-client 0.68.0",
+ "kube-core 0.68.0",
+]
+
+[[package]]
+name = "kube"
+version = "0.69.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "86835e9147615457c1edc2b11c723acd1d21372e9cefa80a9d2742f6d69042d0"
+dependencies = [
+ "k8s-openapi 0.14.0",
+ "kube-client 0.69.1",
+ "kube-core 0.69.1",
 ]
 
 [[package]]
@@ -1606,7 +1617,43 @@ dependencies = [
  "hyper-timeout",
  "jsonpath_lib",
  "k8s-openapi 0.14.0",
- "kube-core",
+ "kube-core 0.68.0",
+ "pem",
+ "pin-project",
+ "rustls",
+ "rustls-pemfile 0.2.1",
+ "secrecy",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "thiserror",
+ "tokio",
+ "tokio-util 0.6.9",
+ "tower",
+ "tower-http",
+ "tracing",
+]
+
+[[package]]
+name = "kube-client"
+version = "0.69.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "71f8aa916ee8290fbd0af76b3a28093a8786fccb6286902095a5243484447971"
+dependencies = [
+ "base64",
+ "bytes",
+ "chrono",
+ "dirs-next",
+ "either",
+ "futures",
+ "http",
+ "http-body",
+ "hyper",
+ "hyper-rustls",
+ "hyper-timeout",
+ "jsonpath_lib",
+ "k8s-openapi 0.14.0",
+ "kube-core 0.69.1",
  "pem",
  "pin-project",
  "rustls",
@@ -1628,6 +1675,22 @@ name = "kube-core"
 version = "0.68.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6878656f5e349ef08b0a48d2b1841f1e68c4cf1ef42524feadad2f9a109dd888"
+dependencies = [
+ "chrono",
+ "form_urlencoded",
+ "http",
+ "k8s-openapi 0.14.0",
+ "once_cell",
+ "serde",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
+name = "kube-core"
+version = "0.69.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "da41f98f213796a68fcd4510c88b5fd36de131c1ea30d152474c3f2e1bef1a72"
 dependencies = [
  "chrono",
  "form_urlencoded",
@@ -2415,7 +2478,7 @@ dependencies = [
  "cached",
  "hyper",
  "json-patch",
- "kube",
+ "kube 0.68.0",
  "kubewarden-policy-sdk",
  "lazy_static",
  "policy-fetcher",
@@ -2468,7 +2531,7 @@ dependencies = [
  "hyper",
  "itertools",
  "k8s-openapi 0.14.0",
- "kube",
+ "kube 0.69.1",
  "kubewarden-policy-sdk",
  "lazy_static",
  "num_cpus",
