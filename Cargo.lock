@@ -2466,6 +2466,7 @@ dependencies = [
  "anyhow",
  "async-stream",
  "clap",
+ "directories",
  "futures-util",
  "hyper",
  "itertools",

@@ -30,6 +30,18 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
+
+      # log into ghcr using the GITHUB_TOKEN, this is needed
+      # because one of the tests below downloads a small policy from
+      # ghcr. Being authenticated should eliminate the chances of this GH
+      # action being blocked/rate limited by ghcr
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions-rs/cargo@v1
         with:
           command: test

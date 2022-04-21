@@ -36,6 +36,7 @@ tracing-futures = "0.2"
 tracing-opentelemetry = "0.17.2"
 
 [dev-dependencies]
+directories = "4.0.1"
 tempfile = "3.3.0"
 
 [patch.crates-io]

@@ -235,7 +235,9 @@ async fn create_verifier(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use directories::BaseDirs;
     use lazy_static::lazy_static;
+    use policy_fetcher::registry::config::read_docker_config_json_file;
     use std::sync::Mutex;
     use tempfile::TempDir;
     use tokio::runtime::Runtime;
@@ -245,7 +247,22 @@ mod tests {
         // of the unit tests
         static ref DOWNLOADER: Mutex<Downloader> = Mutex::new({
             let rt = Runtime::new().unwrap();
-            rt.block_on(async { Downloader::new(None, None, true, None).await.unwrap() })
+            let docker_config_path = BaseDirs::new().map(|bd|
+                bd.home_dir().join(".docker").join("config.json")
+            );
+            let docker_config = if let Some(dcp) = docker_config_path {
+                if dcp.exists() {
+                    info!("loading docker config file");
+                    Some(read_docker_config_json_file(&dcp).expect("Error reading docker config file"))
+                } else {
+                    info!("docker config file not found");
+                    None
+                }
+            } else {
+                info!("cannot infer location of docker config file");
+                None
+            };
+            rt.block_on(async { Downloader::new(None, docker_config, true, None).await.unwrap() })
         });
     }
 
