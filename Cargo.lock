@@ -2658,7 +2658,6 @@ dependencies = [
  "itertools 0.10.3",
  "k8s-openapi 0.14.0",
  "kube",
- "kubewarden-policy-sdk 0.3.2",
  "lazy_static",
  "num_cpus",
  "opentelemetry",
