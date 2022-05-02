@@ -1722,6 +1722,25 @@ dependencies = [
 [[package]]
 name = "kubewarden-policy-sdk"
 version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e0d622a603fd5dc1c9b660e0303923cc820b7b10e0b695f2869be8a1fbac8743"
+dependencies = [
+ "anyhow",
+ "k8s-openapi 0.14.0",
+ "num",
+ "num-derive",
+ "num-traits",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "slog",
+ "url 2.2.2",
+ "wapc-guest",
+]
+
+[[package]]
+name = "kubewarden-policy-sdk"
+version = "0.4.0"
 source = "git+https://github.com/kubewarden/policy-sdk-rust?tag=v0.4.0#5a000314ebcc6398f759968bf2822103f08c6dc5"
 dependencies = [
  "anyhow",
@@ -2609,7 +2628,7 @@ dependencies = [
  "async-trait",
  "base64",
  "directories",
- "kubewarden-policy-sdk 0.4.0",
+ "kubewarden-policy-sdk 0.4.0 (git+https://github.com/kubewarden/policy-sdk-rust?tag=v0.4.0)",
  "lazy_static",
  "oci-distribution",
  "path-slash",
@@ -2639,7 +2658,7 @@ dependencies = [
  "itertools",
  "k8s-openapi 0.14.0",
  "kube",
- "kubewarden-policy-sdk 0.3.2",
+ "kubewarden-policy-sdk 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static",
  "num_cpus",
  "opentelemetry",
