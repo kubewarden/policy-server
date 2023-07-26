@@ -18,7 +18,7 @@ jobs:
 
       - name: Get old release tag
         id: get_old_release_tag
-        uses: actions/github-script@v6
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
         with:
           script: |
             let release = await github.rest.repos.getLatestRelease({
@@ -33,7 +33,7 @@ jobs:
             core.setFailed("Cannot find latest release")
 
       - name: Get release ID from the release created by release drafter
-        uses: actions/github-script@v6
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
         with:
           script: |
             let releases = await github.rest.repos.listReleases({
@@ -50,7 +50,7 @@ jobs:
             core.setFailed(`Draft release not found`)
 
       - name: Download build artifacts
-        uses: actions/github-script@v6
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
         with:
           script: |
             let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -78,7 +78,7 @@ jobs:
 
       - name: Upload release assets
         id: upload_release_assets
-        uses: actions/github-script@v6
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
         with:
           script: |
             let fs = require('fs');
@@ -101,7 +101,7 @@ jobs:
             }
 
       - name: Publish release
-        uses: actions/github-script@v6
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
         with:
           script: |
             const {RELEASE_ID} = process.env

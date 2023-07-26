@@ -32,7 +32,7 @@ jobs:
       - ci
     steps:
       - name: Install cosign
-        uses: sigstore/cosign-installer@v3
+        uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06 # v3
 
       - name: Install SBOM generator tool
         uses: kubewarden/github-actions/sbom-generator-installer@v1
@@ -73,10 +73,10 @@ jobs:
           sudo sed -i "s/-dynamic-linker.*/-no-dynamic-linker  -nostdlib %{shared:-shared} %{static:-static} %{rdynamic:-no-export-dynamic}/g" /usr/lib/${{ matrix.targetarch }}-linux-musl/musl-gcc.specs
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
 
       - name: Setup rust toolchain
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af # v1
         with:
           toolchain: stable
 
@@ -106,7 +106,7 @@ jobs:
             policy-server-${{ matrix.targetarch }}/policy-server-${{ matrix.targetarch }}.spdx.json
 
       - name: Upload policy-server directory
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3
         with:
           name: policy-server-${{ matrix.targetarch }}
           path: |
@@ -122,16 +122,16 @@ jobs:
      - build-policy-server-binaries
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
 
       # Download the policy-server artifacts we've built inside of the previous job
       - name: Download policy-server-x86_64 artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3
         with:
           name: policy-server-x86_64
           path: artifacts-x86_64
       - name: Download policy-server-aarch64 artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3
         with:
           name: policy-server-aarch64
           path: artifacts-aarch64
@@ -142,11 +142,11 @@ jobs:
 
       # Prepare docker environment
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@2b82ce82d56a2a04d2637cd93a637ae1b359c0a7 # v2
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@4c0219f9ac95b02789c1075625400b2acbff50b1 # v2
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc # v2
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -155,7 +155,7 @@ jobs:
       # Build and push `latest` image
       - name: Build and export to docker
         if: ${{ startsWith(github.ref, 'refs/heads/') }}
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825 # v4
         with:
           context: .
           load: true
@@ -168,7 +168,7 @@ jobs:
       - name: Build and push
         if: ${{ startsWith(github.ref, 'refs/heads/') }}
         id: build-latest
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825 # v4
         with:
           context: .
           platforms: linux/amd64, linux/arm64
@@ -191,7 +191,7 @@ jobs:
           echo TAG_NAME=$(echo $GITHUB_REF | sed -e "s|refs/tags/||") >> $GITHUB_ENV
       - name: Build and export to docker
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825 # v4
         with:
           context: .
           load: true
@@ -204,7 +204,7 @@ jobs:
       - name: Build and push
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         id: build-tag
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@2eb1c1961a95fc15694676618e422e8ba1d63825 # v4
         with:
           context: .
           platforms: linux/amd64, linux/arm64
@@ -213,7 +213,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/policy-server:${{ env.TAG_NAME }}
 
       # Sign the container image that has just been built
-      - uses: sigstore/cosign-installer@v3
+      - uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06 # v3
       - name: Sign the images for releases
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: |
@@ -254,7 +254,7 @@ jobs:
 
       # Upload the SBOM files of the container image as assets
       - name: Upload policy-server container image SBOM files
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3
         with:
           name: policy-server-container-image-sbom
           path: |
