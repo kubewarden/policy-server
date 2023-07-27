@@ -3,10 +3,10 @@ IMG ?= policy-server:latest
 BINDIR ?= bin
 SBOM_GENERATOR_TOOL_VERSION ?= v0.0.15
 
-SOURCE_FILES := $(shell test -e src/ && find src -type f)
+SOURCE_FILES_POLICY_SERVER := $(shell test -e crates/policy-server/src/ && find crates/policy-server/src -type f)
 
-target/release/policy-server: $(SOURCE_FILES) Cargo.*
-	cargo build --release
+target/release/policy-server: $(SOURCE_FILES_POLICY_SERVER) crates/policy-server/Cargo.*
+	cargo build -p policy-server --release
 
 .PHONY: build
 build: target/release/policy-server
