@@ -6,3 +6,13 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = { workspace = true }
+clap = { workspace = true, features = ["derive"] }
+k8s-openapi = { workspace = true }
+kube = { version = "0.84.0", default-features = false, features = ["client", "rustls-tls"] }
+# We have to wait to for the next release of the crate that includes this fix
+kubert = { git = "https://github.com/flavio/kubert.git", branch = "fix-compilation-of-lease-feature", default-features = false, features = ["lease"] }
+tokio = { workspace = true }
+tracing-futures = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
+tracing = { workspace = true }
