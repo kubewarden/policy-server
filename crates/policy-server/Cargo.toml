@@ -6,7 +6,7 @@ authors = [
   "Flavio Castelli <fcastelli@suse.com>",
   "Rafael Fernández López <rfernandezlopez@suse.com>",
   "Víctor Cuadrado Juan <vcuadradojuan@suse.de>",
-  "José Guilherme Vanz <jguilhermevanz@suse.com>"
+  "José Guilherme Vanz <jguilhermevanz@suse.com>",
 ]
 edition = "2021"
 
@@ -20,8 +20,13 @@ k8s-openapi = { workspace = true }
 lazy_static = "1.4.0"
 num_cpus = "1.16.0"
 opentelemetry-otlp = { version = "0.10.0", features = ["metrics", "tonic"] }
-opentelemetry = { version = "0.17", default-features = false, features = ["metrics", "trace", "rt-tokio", "serialize"] }
-policy-evaluator = { git = "https://github.com/kubewarden/policy-evaluator", tag = "v0.11.1" }
+opentelemetry = { version = "0.17", default-features = false, features = [
+  "metrics",
+  "trace",
+  "rt-tokio",
+  "serialize",
+] }
+policy-evaluator = { git = "https://github.com/kubewarden/policy-evaluator", tag = "v0.11.3" }
 procfs = "0.15"
 rayon = "1.6"
 semver = { version = "1.0.18", features = ["serde"] }
@@ -33,7 +38,10 @@ tracing-futures = { workspace = true }
 tracing-opentelemetry = "0.17.4"
 tracing-subscriber = { workspace = true }
 tracing = { workspace = true }
-warp = { version = "0.3.5", default_features = false, features = [ "multipart", "tls"] }
+warp = { version = "0.3.5", default_features = false, features = [
+  "multipart",
+  "tls",
+] }
 
 [dev-dependencies]
 rstest = "0.18"
