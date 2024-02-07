@@ -469,7 +469,7 @@ dependencies = [
  "hyper 1.1.0",
  "hyper-util",
  "pin-project-lite",
- "rustls",
+ "rustls 0.21.10",
  "rustls-pemfile 2.0.0",
  "tokio",
  "tokio-rustls",
@@ -599,7 +599,7 @@ checksum = "7f30e7476521f6f8af1a1c4c0b8cc94f0bee37d91763d0ca2665f299b6cd8aec"
 [[package]]
 name = "burrego"
 version = "0.3.4"
-source = "git+https://github.com/kubewarden/policy-evaluator?tag=v0.14.2#275e402a2f02655babcb68e4a99ad06bd9891c9c"
+source = "git+https://github.com/kubewarden/policy-evaluator?tag=v0.15.0#ac2377018cb3cdb1f6f16ab6c7aa51a3b772f92e"
 dependencies = [
  "base64 0.21.7",
  "chrono",
@@ -2123,7 +2123,7 @@ dependencies = [
  "http 0.2.11",
  "hyper 0.14.28",
  "log",
- "rustls",
+ "rustls 0.21.10",
  "rustls-native-certs",
  "tokio",
  "tokio-rustls",
@@ -2471,7 +2471,7 @@ dependencies = [
  "kube-core",
  "pem 3.0.3",
  "pin-project",
- "rustls",
+ "rustls 0.21.10",
  "rustls-pemfile 1.0.4",
  "secrecy",
  "serde",
@@ -2958,6 +2958,31 @@ dependencies = [
  "thiserror",
  "tokio",
  "tokio-util",
+ "tracing",
+ "unicase",
+]
+
+[[package]]
+name = "oci-distribution"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2a635cabf7a6eb4e5f13e9e82bd9503b7c2461bf277132e38638a935ebd684b4"
+dependencies = [
+ "bytes",
+ "chrono",
+ "futures-util",
+ "http 0.2.11",
+ "http-auth",
+ "jwt",
+ "lazy_static",
+ "olpc-cjson",
+ "regex",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sha2",
+ "thiserror",
+ "tokio",
  "tracing",
  "unicase",
 ]
@@ -3544,7 +3569,7 @@ checksum = "626dec3cac7cc0e1577a2ec3fc496277ec2baa084bebad95bb6fdbfae235f84c"
 [[package]]
 name = "policy-evaluator"
 version = "0.14.2"
-source = "git+https://github.com/kubewarden/policy-evaluator?tag=v0.14.2#275e402a2f02655babcb68e4a99ad06bd9891c9c"
+source = "git+https://github.com/kubewarden/policy-evaluator?tag=v0.15.0#ac2377018cb3cdb1f6f16ab6c7aa51a3b772f92e"
 dependencies = [
  "anyhow",
  "base64 0.21.7",
@@ -3577,7 +3602,7 @@ dependencies = [
  "wapc",
  "wasi-cap-std-sync",
  "wasi-common",
- "wasmparser 0.120.0",
+ "wasmparser 0.121.0",
  "wasmtime",
  "wasmtime-provider",
  "wasmtime-wasi",
@@ -3585,10 +3610,9 @@ dependencies = [
 
 [[package]]
 name = "policy-fetcher"
-version = "0.8.1"
-source = "git+https://github.com/kubewarden/policy-fetcher?tag=v0.8.1#fb5752de196e58df2da6134cb59212d7f6ebc291"
+version = "0.8.2"
+source = "git+https://github.com/kubewarden/policy-fetcher?tag=v0.8.2#3954be5dffeb3d6281e75aa5ac6d454aa3dbe832"
 dependencies = [
- "anyhow",
  "async-std",
  "async-stream",
  "async-trait",
@@ -3597,17 +3621,18 @@ dependencies = [
  "directories",
  "docker_credential",
  "lazy_static",
- "oci-distribution",
+ "oci-distribution 0.10.0",
  "path-slash",
  "rayon",
  "regex",
  "reqwest",
- "rustls",
+ "rustls 0.22.2",
  "serde",
  "serde_json",
  "serde_yaml",
  "sha2",
  "sigstore",
+ "thiserror",
  "tokio",
  "tracing",
  "url",
@@ -4005,7 +4030,7 @@ dependencies = [
  "once_cell",
  "percent-encoding",
  "pin-project-lite",
- "rustls",
+ "rustls 0.21.10",
  "rustls-pemfile 1.0.4",
  "serde",
  "serde_json",
@@ -4171,8 +4196,22 @@ checksum = "f9d5a6813c0759e4609cd494e8e725babae6a2ca7b62a5536a13daaec6fcb7ba"
 dependencies = [
  "log",
  "ring 0.17.7",
- "rustls-webpki",
+ "rustls-webpki 0.101.7",
  "sct",
+]
+
+[[package]]
+name = "rustls"
+version = "0.22.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e87c9956bd9807afa1f77e0f7594af32566e830e088a5576d27c5b6f30f49d41"
+dependencies = [
+ "log",
+ "ring 0.17.7",
+ "rustls-pki-types",
+ "rustls-webpki 0.102.2",
+ "subtle",
+ "zeroize",
 ]
 
 [[package]]
@@ -4219,6 +4258,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b6275d1ee7a1cd780b64aca7726599a1dbc893b1e64144529e55c3c2f745765"
 dependencies = [
  "ring 0.17.7",
+ "untrusted 0.9.0",
+]
+
+[[package]]
+name = "rustls-webpki"
+version = "0.102.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "faaa0a62740bedb9b2ef5afa303da42764c012f743917351dc9a237ea1663610"
+dependencies = [
+ "ring 0.17.7",
+ "rustls-pki-types",
  "untrusted 0.9.0",
 ]
 
@@ -4557,7 +4607,7 @@ dependencies = [
  "elliptic-curve",
  "getrandom",
  "lazy_static",
- "oci-distribution",
+ "oci-distribution 0.9.4",
  "olpc-cjson",
  "openidconnect",
  "p256",
@@ -4938,7 +4988,7 @@ version = "0.24.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c28327cf380ac148141087fbfb9de9d7bd4e84ab5d2c28fbc911d753de8a7081"
 dependencies = [
- "rustls",
+ "rustls 0.21.10",
  "tokio",
 ]
 
@@ -5590,17 +5640,6 @@ version = "0.118.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "95ee9723b928e735d53000dec9eae7b07a60e490c85ab54abb66659fc61bfcd9"
 dependencies = [
- "indexmap 2.2.2",
- "semver",
-]
-
-[[package]]
-name = "wasmparser"
-version = "0.120.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e9148127f39cbffe43efee8d5442b16ecdba21567785268daa1ec9e134389705"
-dependencies = [
- "bitflags 2.4.2",
  "indexmap 2.2.2",
  "semver",
 ]
