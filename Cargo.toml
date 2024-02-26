@@ -26,7 +26,7 @@ opentelemetry = { version = "0.21", default-features = false, features = [
   "metrics",
   "trace",
 ] }
-opentelemetry_sdk = { version = "0.21", features = ["rt-tokio"] }
+opentelemetry_sdk = { version = "0.22", features = ["rt-tokio"] }
 procfs = "0.16"
 policy-evaluator = { git = "https://github.com/kubewarden/policy-evaluator", tag = "v0.16.1" }
 rayon = "1.8"
