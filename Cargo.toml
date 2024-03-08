@@ -24,7 +24,7 @@ lazy_static = "1.4.0"
 mime = "0.3"
 num_cpus = "1.16.0"
 opentelemetry-otlp = { version = "0.14.0", features = ["metrics", "tonic"] }
-opentelemetry = { version = "0.21", default-features = false, features = [
+opentelemetry = { version = "0.22", default-features = false, features = [
   "metrics",
   "trace",
 ] }
