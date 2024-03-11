@@ -95,7 +95,7 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - uses: taiki-e/install-action@dabb9c1ee51c21c545764a0d517f069ff52e6477 # v2.28.1
+      - uses: taiki-e/install-action@4abee32ddd6d3482e57ba21814317997e6268efe # v2.28.11
         with:
           tool: cargo-tarpaulin
       - name: Generate unit-tests coverage
