@@ -17,7 +17,7 @@ daemonize = "0.5"
 futures = "0.3"
 itertools = "0.12.1"
 k8s-openapi = { version = "0.22.0", default-features = false, features = [
-  "v1_29",
+  "v1_30",
 ] }
 lazy_static = "1.4.0"
 mime = "0.3"
