@@ -381,9 +381,9 @@ dependencies = [
 
 [[package]]
 name = "backon"
-version = "0.5.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33e5b65cc81d81fbb8488f36458ab4771be35a722967bbc959df28b47397e3ff"
+checksum = "274cb2897ebb0ed1d2f70adb956fb0a0384aa208eea7f2845fb7aa6cd7f39277"
 dependencies = [
  "fastrand",
  "tokio",
