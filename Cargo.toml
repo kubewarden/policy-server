@@ -46,7 +46,7 @@ sha2 = "0.10"
 thiserror = "2.0"
 tokio = { version = "^1.41.0", features = ["full"] }
 tracing = "0.1"
-tracing-opentelemetry = "0.27.0"
+tracing-opentelemetry = "0.28.0"
 tracing-subscriber = { version = "0.3", features = ["ansi", "fmt", "json"] }
 semver = { version = "1.0.22", features = ["serde"] }
 mockall_double = "0.3"
