@@ -23,6 +23,7 @@ use policy_evaluator::{
     admission_response::AdmissionResponseStatus,
     policy_fetcher::verify::config::VerificationConfigV1,
 };
+use policy_server::config::OtlpTlsConfig;
 use policy_server::{
     api::admission_review::AdmissionReviewResponse,
     config::{PolicyMode, PolicyOrPolicyGroup},
@@ -746,8 +747,18 @@ async fn test_detect_certificate_rotation() {
 async fn test_otel() {
     setup();
 
-    let mut otelc_config_path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    otelc_config_path.push("tests/data/otel-collector-config.yaml");
+    let otelc_config_path =
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/data/otel-collector-config.yaml");
+
+    let ca_path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/data/ca.pem");
+    let server_cert_path =
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/data/server-cert.pem");
+    let server_key_path =
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/data/server-key.pem");
+    let client_cert_path =
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/data/client-cert.pem");
+    let client_key_path =
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/data/client-key.pem");
 
     let metrics_output_file = NamedTempFile::new().unwrap();
     let metrics_output_file_path = metrics_output_file.path();
@@ -757,7 +768,7 @@ async fn test_otel() {
 
     let permissions = Permissions::from_mode(0o666);
     set_permissions(metrics_output_file_path, permissions.clone()).unwrap();
-    set_permissions(traces_output_file_path, permissions).unwrap();
+    set_permissions(traces_output_file_path, permissions.clone()).unwrap();
 
     let otelc = GenericImage::new("otel/opentelemetry-collector", "0.98.0")
         .with_wait_for(WaitFor::message_on_stderr("Everything is ready"))
@@ -773,6 +784,18 @@ async fn test_otel() {
             traces_output_file_path.to_str().unwrap(),
             "/tmp/traces.json",
         ))
+        .with_mount(Mount::bind_mount(
+            ca_path.to_str().unwrap(),
+            "/certs/ca.pem",
+        ))
+        .with_mount(Mount::bind_mount(
+            server_cert_path.to_str().unwrap(),
+            "/certs/server-cert.pem",
+        ))
+        .with_mount(Mount::bind_mount(
+            server_key_path.to_str().unwrap(),
+            "/certs/server-key.pem",
+        ))
         .with_mapped_port(1337, 4317.into())
         .with_cmd(vec!["--config=/etc/otel-collector-config.yaml"])
         .with_startup_timeout(Duration::from_secs(30))
@@ -783,13 +806,24 @@ async fn test_otel() {
     let mut config = default_test_config();
     config.metrics_enabled = true;
     config.log_fmt = "otlp".to_string();
-    config.otlp_endpoint = Some("http://localhost:1337".to_string());
-    setup_metrics(config.otlp_endpoint.as_deref()).unwrap();
+    config.otlp_endpoint = Some("https://localhost:1337".to_string());
+    config.otlp_tls_config = OtlpTlsConfig {
+        ca_file: Some(ca_path),
+        cert_file: Some(client_cert_path),
+        key_file: Some(client_key_path),
+    };
+
+    setup_metrics(
+        config.otlp_endpoint.as_deref(),
+        config.otlp_tls_config.clone(),
+    )
+    .unwrap();
     setup_tracing(
         &config.log_level,
         &config.log_fmt,
         config.log_no_color,
         config.otlp_endpoint.as_deref(),
+        config.otlp_tls_config.clone(),
     )
     .unwrap();
 
