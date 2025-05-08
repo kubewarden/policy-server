@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use lazy_static::lazy_static;
 use policy_evaluator::{
-    policy_evaluator::PolicyExecutionMode, policy_metadata::Metadata, wasmtime,
+    policy_evaluator::PolicyExecutionMode, policy_metadata::Metadata, wasmtime, ProtocolVersion,
 };
 use semver::{BuildMetadata, Prerelease, Version};
 use sha2::{Digest, Sha256};
@@ -50,6 +50,8 @@ impl PrecompiledPolicy {
         let execution_mode = metadata.execution_mode;
         has_minimum_kubewarden_version(&metadata)?;
 
+        has_valid_protocol_version(&metadata)?;
+
         let precompiled_module = engine.precompile_module(&policy_contents)?;
 
         let mut hasher = Sha256::new();
@@ -88,6 +90,19 @@ fn has_minimum_kubewarden_version(metadata: &Metadata) -> Result<()> {
                 "Policy required Kubewarden version {} but is running on {}",
                 sanitized_minimum_kubewarden_version,
                 KUBEWARDEN_VERSION.to_string(),
+            ));
+        }
+    }
+    Ok(())
+}
+
+// Check if the policy uses a valid protocol version for KubewardenWapc policies
+fn has_valid_protocol_version(metadata: &Metadata) -> Result<()> {
+    if metadata.execution_mode == PolicyExecutionMode::KubewardenWapc {
+        if metadata.protocol_version != Some(ProtocolVersion::V1) {
+            return Err(anyhow!(
+                "Policy uses protocol version {:?} but only V1 is supported",
+                metadata.protocol_version
             ));
         }
     }
@@ -140,5 +155,25 @@ mod tests {
     #[case(generate_metadata(KUBEWARDEN_VERSION.major, KUBEWARDEN_VERSION.minor, KUBEWARDEN_VERSION.patch + 1))]
     fn ignore_patch_version_test(#[case] metadata: Metadata) {
         assert!(has_minimum_kubewarden_version(&metadata).is_ok())
+    }
+
+    #[rstest]
+    #[case(Metadata {
+        execution_mode: PolicyExecutionMode::KubewardenWapc,
+        protocol_version: Some(ProtocolVersion::V1),
+        ..Default::default()
+    })]
+    fn valid_protocol_version_test(#[case] metadata: Metadata) {
+        assert!(has_valid_protocol_version(&metadata).is_ok())
+    }
+
+    #[rstest]
+    #[case(Metadata {
+        execution_mode: PolicyExecutionMode::KubewardenWapc,
+        protocol_version: Some(ProtocolVersion::Unknown),
+        ..Default::default()
+    })]
+    fn invalid_protocol_version_test(#[case] metadata: Metadata) {
+        assert!(has_valid_protocol_version(&metadata).is_err())
     }
 }
