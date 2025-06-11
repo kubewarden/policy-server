@@ -475,7 +475,7 @@ impl EvaluationEnvironment {
         match &settings.settings {
             PolicyOrPolicyGroupSettings::Policy(settings) => {
                 let mut evaluator = self.rehydrate(policy_id)?;
-                match evaluator.validate_settings(&settings.clone().into()) {
+                match evaluator.validate_settings(settings) {
                     SettingsValidationResponse {
                         valid: true,
                         message: _,
@@ -570,11 +570,10 @@ impl EvaluationEnvironment {
             return Err(EvaluationError::PolicyInitialization(error.to_string()));
         }
 
-        let settings: serde_json::Map<String, serde_json::Value> =
-            match self.get_policy_settings(policy_id)?.settings {
-                PolicyOrPolicyGroupSettings::Policy(settings) => settings.into(),
-                _ => unreachable!(),
-            };
+        let settings = match self.get_policy_settings(policy_id)?.settings {
+            PolicyOrPolicyGroupSettings::Policy(settings) => settings,
+            _ => unreachable!(),
+        };
         let mut evaluator = self.rehydrate(policy_id)?;
 
         Ok(evaluator.validate(req.clone(), &settings))
@@ -629,11 +628,10 @@ impl EvaluationEnvironment {
                 .get(&policy_id)
                 .ok_or(EvaluationError::PolicyNotFound(policy_id.to_string()))?;
 
-            let settings: serde_json::Map<String, serde_json::Value> =
-                match self.get_policy_settings(&policy_id)?.settings {
-                    PolicyOrPolicyGroupSettings::Policy(settings) => settings.into(),
-                    _ => unreachable!(),
-                };
+            let settings = match self.get_policy_settings(&policy_id)?.settings {
+                PolicyOrPolicyGroupSettings::Policy(settings) => settings,
+                _ => unreachable!(),
+            };
 
             let policy_group_member_settings = PolicyGroupMemberSettings {
                 settings,
@@ -943,7 +941,7 @@ mod tests {
         let policy_id = PolicyID::Policy(policy_id.to_string());
         let evaluation_environment = Arc::new(build_evaluation_environment());
         let validate_request =
-            ValidateRequest::AdmissionRequest(build_admission_review_request().request);
+            ValidateRequest::AdmissionRequest(Box::new(build_admission_review_request().request));
 
         if expect_error {
             assert!(matches!(
@@ -1006,7 +1004,7 @@ mod tests {
         let policy_id = PolicyID::Policy(policy_id.to_string());
         let evaluation_environment = Arc::new(build_evaluation_environment());
         let validate_request =
-            ValidateRequest::AdmissionRequest(build_admission_review_request().request);
+            ValidateRequest::AdmissionRequest(Box::new(build_admission_review_request().request));
 
         assert!(evaluation_environment.get_policy_mode(&policy_id).is_ok());
         assert!(evaluation_environment
@@ -1065,7 +1063,7 @@ mod tests {
         let evaluation_environment = Arc::new(evaluation_environment);
 
         let validate_request =
-            ValidateRequest::AdmissionRequest(build_admission_review_request().request);
+            ValidateRequest::AdmissionRequest(Box::new(build_admission_review_request().request));
         assert!(matches!(
             evaluation_environment.validate(&policy_id, &validate_request).unwrap_err(),
             EvaluationError::PolicyInitialization(error) if error == "error"
