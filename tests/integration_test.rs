@@ -649,11 +649,11 @@ mod certificate_reload_helpers {
     pub fn create_cert(hostname: &str) -> TlsData {
         let subject_alt_names = vec![hostname.to_string()];
 
-        let CertifiedKey { cert, key_pair } =
+        let CertifiedKey { cert, signing_key } =
             generate_simple_self_signed(subject_alt_names).unwrap();
 
         TlsData {
-            key: key_pair.serialize_pem(),
+            key: signing_key.serialize_pem(),
             cert: cert.pem(),
         }
     }
